@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Templates are Ready!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CB6A7;
+            --primary-dark: #3a8c7f;
+            --secondary: #1A2B3C;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --success: #10b981;
+            --info: #3b82f6;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius: 12px;
+            --shadow: 0 10px 25px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--secondary);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(76, 182, 167, 0.1) 0%, transparent 70%);
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .success-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        /* Analysis Results */
+        .analysis-section {
+            padding: 30px 40px;
+            background: var(--light);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .analysis-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .analysis-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .analysis-card h3 {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .analysis-card .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .selected-info {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 20px;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary);
+            margin-top: 15px;
+        }
+        
+        /* Templates Section - 2x2 Grid */
+        .templates-section {
+            padding: 40px;
+        }
+        
+        /* 2x2 Grid Layout */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, auto);
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        @media (max-width: 1024px) {
+            .templates-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+        }
+        
+        .template-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--light-gray);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .template-preview {
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .template-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .template-card:hover .template-preview img {
+            transform: scale(1.05);
+        }
+        
+        .template-preview .preview-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .template-card:hover .preview-placeholder {
+            transform: scale(1.02);
+        }
+        
+        .template-preview .preview-placeholder i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.6; transform: scale(1); }
+        }
+        
+        .template-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+        
+        .template-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .template-number {
+            background: var(--secondary);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .template-meta {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .template-tag {
+            background: var(--light);
+            color: var(--gray);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .template-tag.primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .template-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .template-desc {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        /* Actions */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--secondary);
+            border-color: var(--light-gray);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+        }
+        
+        .btn-edit {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+        
+        /* Bulk Actions */
+        .bulk-section {
+            padding: 40px;
+            background: var(--light);
+            border-top: 1px solid var(--light-gray);
+            text-align: center;
+        }
+        
+        .bulk-card {
+            background: white;
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .bulk-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .bulk-card p {
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+        
+        .btn-large {
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            width: 100%;
+        }
+        
+        .btn-large i {
+            font-size: 1.3rem;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 30px 40px;
+            text-align: center;
+            color: var(--gray);
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .footer-link {
+            color: var(--gray);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+        }
+        
+        /* Grid Layout Classes */
+        .grid-row {
+            display: contents;
+        }
+        
+        /* Stats */
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Template Actions */
+        .template-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .action-btn.edit {
+            background: var(--light);
+            color: var(--secondary);
+            border: 1px solid var(--light-gray);
+        }
+        
+        .action-btn.edit:hover {
+            background: var(--light-gray);
+        }
+        
+        .action-btn.download {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .action-btn.download:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Loading Animation */
+        .loading-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        /* Image loading */
+        .image-loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .template-preview {
+                height: 200px;
+            }
+            
+            .template-actions {
+                flex-direction: column;
+            }
+        }
+        
+        /* Download Animation */
+        .download-animation {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .download-animation.show {
+            display: flex;
+        }
+        
+        .download-spinner {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Preview image styling */
+        .preview-image-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .preview-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .template-preview:hover .preview-image-overlay {
+            opacity: 1;
+        }
+        
+        /* Template placeholder design elements */
+        .template-placeholder-elements {
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+        
+        .placeholder-design-line {
+            width: 80%;
+            height: 2px;
+            background: rgba(255,255,255,0.2);
+            margin: 8px auto;
+            border-radius: 1px;
+        }
+        
+        .placeholder-design-box {
+            width: 60%;
+            height: 30px;
+            background: rgba(255,255,255,0.1);
+            margin: 8px auto;
+            border-radius: 4px;
+        }
+        
+        .placeholder-design-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        
+        .placeholder-dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="success-badge">
+                <i class="fas fa-check-circle"></i>
+                Smart Selection Complete!
+            </div>
+            <h1>Your Personalized Templates</h1>
+            <p>Based on your input, we've selected the <strong>4 best templates</strong> from our collection of 20+ professional designs.</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <i class="fas fa-image"></i> {{ template_count }} Templates
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-magic"></i> AI-Selected
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i> Ready to Download
+                </div>
+            </div>
+        </div>
+        
+        <!-- Analysis Results -->
+        <div class="analysis-section">
+            <div class="section-title">
+                <i class="fas fa-chart-bar"></i>
+                <h2>Analysis Results</h2>
+            </div>
+            
+            {% if user_analysis %}
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <h3>Image Type</h3>
+                    <div class="value">
+                        <i class="fas fa-{% if user_analysis.image_orientation == 'horizontal' %}arrows-alt-h{% elif user_analysis.image_orientation == 'vertical' %}arrows-alt-v{% else %}square{% endif %}"></i>
+                        {{ user_analysis.image_orientation|title }}
+                    </div>
+                </div>
+                <div class="analysis-card">
+                    <h3>Content Type</h3>
+                    <div class="value">
+                        <i class="fas fa-{% if user_analysis.content_type == 'tech' %}laptop-code{% elif user_analysis.content_type == 'creative' %}palette{% elif user_analysis.content_type == 'event' %}calendar-alt{% else %}briefcase{% endif %}"></i>
+                        {{ user_analysis.content_type|title }}
+                    </div>
+                </div>
+                <div class="analysis-card">
+                    <h3>Mood & Style</h3>
+                    <div class="value">
+                        <i class="fas fa-{% if user_analysis.mood == 'professional' %}user-tie{% elif user_analysis.mood == 'creative' %}lightbulb{% elif user_analysis.mood == 'festive' %}party-horn{% else %}smile{% endif %}"></i>
+                        {{ user_analysis.mood|title }}
+                    </div>
+                </div>
+                <div class="analysis-card">
+                    <h3>Purpose</h3>
+                    <div class="value">
+                        <i class="fas fa-{% if user_analysis.purpose == 'team' %}users{% elif user_analysis.purpose == 'product' %}box{% else %}bullseye{% endif %}"></i>
+                        {{ user_analysis.purpose|title }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="selected-info">
+                <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 8px;"></i>
+                <strong>Smart Selection:</strong> Based on your {{ user_analysis.image_orientation }} image and {{ user_analysis.content_type }} content, 
+                we selected templates that match your {{ user_analysis.mood }} mood.
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Templates Section - 2x2 Grid -->
+        <div class="templates-section">
+            <div class="section-title">
+                <i class="fas fa-th-large"></i>
+                <h2>Selected Templates (2x2 Grid)</h2>
+                <span style="margin-left: auto; background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem;">
+                    {{ template_count }} Templates
+                </span>
+            </div>
+            
+            <div class="templates-grid">
+                {% for file in files_data %}
+                <div class="template-card" data-template="{{ file.template_num }}">
+                    <div class="template-preview">
+                        <div class="preview-image-container" id="previewContainer{{ file.template_num }}">
+                            <!-- This will be populated by JavaScript -->
+                        </div>
+                        <div class="template-badge">
+                            <i class="fas fa-star"></i>
+                            #{{ file.template_num }}
+                        </div>
+                    </div>
+                    
+                    <div class="template-info">
+                        <div class="template-header">
+                            <div class="template-number">
+                                Template #{{ file.template_num }}
+                            </div>
+                            <div class="template-meta">
+                                <span class="template-tag primary">{{ file.template_style|title }}</span>
+                                <span class="template-tag">{{ file.template_mood|title }}</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="template-title">{{ file.template_name }}</h3>
+                        
+                        <p class="template-desc">
+                            <i class="fas fa-check-circle" style="color: var(--success); margin-right: 5px;"></i>
+                            Perfect for {{ user_analysis.content_type if user_analysis else 'your' }} content with {{ file.template_mood }} mood.
+                        </p>
+                        
+                        <div class="action-buttons">
+                            <a href="{{ file.edit_url }}" class="btn btn-edit">
+                                <i class="fas fa-edit"></i>
+                                Edit Content
+                            </a>
+                            <a href="{{ file.download_url }}" class="btn btn-primary download-btn" data-template="{{ file.template_num }}">
+                                <i class="fas fa-download"></i>
+                                Download
+                            </a>
+                        </div>
+                        
+                        <div class="template-actions">
+                            <a href="{{ file.edit_url }}" class="action-btn edit">
+                                <i class="fas fa-edit"></i>
+                                Edit Template
+                            </a>
+                            <a href="{{ file.download_url }}" class="action-btn download download-btn" data-template="{{ file.template_num }}">
+                                <i class="fas fa-download"></i>
+                                Download JPEG
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Bulk Download Section -->
+        <div class="bulk-section">
+            <div class="bulk-card">
+                <h3>Need All Templates?</h3>
+                <p>Click on any template above to download it individually. Each template is generated on-demand with your image and content.</p>
+                
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-large">
+                    <i class="fas fa-plus-circle"></i>
+                    Create New Templates
+                </a>
+                
+                <div style="margin-top: 20px; font-size: 0.9rem; color: var(--gray);">
+                    <i class="fas fa-info-circle"></i>
+                    All templates are generated on-demand in high-quality JPEG format
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>Generated with Smart Template Selection • All templates are professionally designed</p>
+            <div class="footer-links">
+                <a href="{{ url_for('index') }}" class="footer-link">
+                    <i class="fas fa-plus-circle"></i>
+                    Create More Templates
+                </a>
+                <a href="{{ url_for('clear_session', session_id=session_id) }}" class="footer-link">
+                    <i class="fas fa-trash"></i>
+                    Clear Session
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Download Animation -->
+    <div class="download-animation" id="downloadAnimation">
+        <div class="download-spinner"></div>
+        <h2>Generating Template...</h2>
+        <p id="downloadMessage">Preparing your template for download</p>
+    </div>
+    
+    <!-- Template Preview Modal -->
+    <div class="preview-modal" id="previewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; padding: 20px;">
+        <div style="max-width: 800px; max-height: 90vh; background: white; border-radius: 12px; overflow: hidden; position: relative;">
+            <div style="padding: 20px; background: var(--secondary); color: white; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0;">Template Preview</h3>
+                <button onclick="closePreview()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+            <div id="previewContent" style="padding: 0;">
+                <!-- Preview content will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Function to get template gradient based on template number
+        function getTemplateGradient(templateNum) {
+            const gradients = {
+                1: 'linear-gradient(135deg, #1A2B3C, #0f172a)',
+                2: 'linear-gradient(135deg, #f8fafc, #e2e8f0)',
+                3: 'linear-gradient(135deg, #0f172a, #1A2B3C)',
+                4: 'linear-gradient(135deg, #ffffff, #f0f9ff)',
+                5: 'linear-gradient(135deg, #050a0f, #0A1622)',
+                6: 'linear-gradient(135deg, #f1f5f9, #e2e8f0)',
+                7: 'linear-gradient(135deg, #1A2B3C, #0f172a)',
+                8: 'linear-gradient(135deg, #0b1118, #1A2B3C)',
+                9: 'linear-gradient(135deg, #f1f5f9, #e2e8f0)',
+                10: 'linear-gradient(135deg, #ffffff, #f0f9ff)',
+                11: 'linear-gradient(135deg, #0A1622, #1A2B3C)',
+                12: 'linear-gradient(135deg, #ffffff, #f0f9ff)',
+                13: 'linear-gradient(135deg, #1A2B3C, #0f172a)',
+                14: 'linear-gradient(135deg, #ffffff, #f0f9ff)',
+                15: 'linear-gradient(135deg, #0A1622, #1A2B3C)',
+                16: 'linear-gradient(135deg, #050a0f, #0A1622)',
+                17: 'linear-gradient(135deg, #050a0f, #0A1622)',
+                18: 'linear-gradient(135deg, #f0f2f5, #e2e8f0)',
+                19: 'linear-gradient(135deg, #f1f5f9, #e2e8f0)',
+                20: 'linear-gradient(135deg, #e2e8f0, #f1f5f9)'
+            };
+            return gradients[templateNum] || 'linear-gradient(135deg, #1A2B3C, #4CB6A7)';
+        }
+        
+        // Function to get icon based on template style
+        function getTemplateIcon(style) {
+            const icons = {
+                'modern-tech': 'fa-microchip',
+                'professional': 'fa-briefcase',
+                'editorial': 'fa-newspaper',
+                'tech': 'fa-laptop-code',
+                'creative': 'fa-palette',
+                'cinematic': 'fa-film',
+                'geometric': 'fa-shapes',
+                '3d': 'fa-cube',
+                'glass': 'fa-gem',
+                'architectural': 'fa-building',
+                'monumental': 'fa-landmark',
+                'team': 'fa-users',
+                'layered': 'fa-layer-group',
+                'dynamic': 'fa-bolt',
+                'futuristic': 'fa-robot',
+                'organic': 'fa-leaf'
+            };
+            return icons[style] || 'fa-image';
+        }
+        
+        // Initialize template previews on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.template-card');
+            
+            cards.forEach((card, index) => {
+                const templateNum = card.getAttribute('data-template');
+                const previewContainer = card.querySelector('.preview-image-container');
+                
+                // Add animation delay
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'fadeInUp 0.5s ease forwards';
+                card.style.opacity = '0';
+                
+                // Create initial placeholder
+                createTemplatePlaceholder(previewContainer, templateNum, card);
+                
+                // Load preview after a delay
+                setTimeout(() => {
+                    loadTemplatePreview(templateNum, previewContainer);
+                }, index * 500); // Stagger the loading
+            });
+            
+            // Add CSS animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        // Create beautiful placeholder for template
+        function createTemplatePlaceholder(container, templateNum, card) {
+            const templateStyle = card.querySelector('.template-tag.primary')?.textContent.toLowerCase() || '';
+            const templateMood = card.querySelector('.template-tag:not(.primary)')?.textContent.toLowerCase() || '';
+            const templateName = card.querySelector('.template-title')?.textContent || `Template ${templateNum}`;
+            
+            const gradient = getTemplateGradient(parseInt(templateNum));
+            const icon = getTemplateIcon(templateStyle);
+            
+            container.innerHTML = `
+                <div class="preview-placeholder" style="background: ${gradient};">
+                    <i class="fas ${icon}"></i>
+                    <div style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">${templateName}</div>
+                    <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 15px;">
+                        ${templateStyle ? templateStyle + ' style' : 'Professional design'}
+                    </div>
+                    
+                    <div class="template-placeholder-elements">
+                        <div class="placeholder-design-dots">
+                            <div class="placeholder-dot"></div>
+                            <div class="placeholder-dot"></div>
+                            <div class="placeholder-dot"></div>
+                            <div class="placeholder-dot"></div>
+                        </div>
+                        <div class="placeholder-design-line"></div>
+                        <div class="placeholder-design-box"></div>
+                        <div class="placeholder-design-line" style="width: 60%;"></div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; font-size: 0.8rem; opacity: 0.8;">
+                        <i class="fas fa-spinner fa-spin"></i> Generating preview...
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Load template preview via AJAX
+        // Load template preview via AJAX - MODIFIED VERSION
+        function loadTemplatePreview(templateNum, container) {
+            const sessionId = '{{ session_id }}';
+            
+            fetch(`/generate-preview/${sessionId}/${templateNum}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.preview_b64) {
+                        // Store BOTH thumbnail and fullsize data
+                        container.dataset.thumbnailB64 = data.preview_b64;
+                        container.dataset.fullsizeB64 = data.fullsize_b64 || data.preview_b64;
+                        
+                        // Show THUMBNAIL in card (smaller image)
+                        container.innerHTML = `
+                            <img src="data:image/jpeg;base64,${data.preview_b64}" 
+                                alt="Template #${templateNum} Preview" 
+                                style="object-fit: cover; width: 75%; height: 100%;"
+                                class="template-thumbnail">
+                        `;
+                        
+                        // Add click handler for preview
+                        const img = container.querySelector('img');
+                        if (img) {
+                            img.addEventListener('click', function() {
+                                // Use FULLSIZE image for modal, thumbnail for card
+                                const fullsizeB64 = container.dataset.fullsizeB64 || data.preview_b64;
+                                const fullsizeSrc = `data:image/jpeg;base64,${fullsizeB64}`;
+                                
+                                showPreviewModal(fullsizeSrc, templateNum, 
+                                    container.closest('.template-card').querySelector('.template-title').textContent);
+                            });
+                        }
+                    } else {
+                        // Keep placeholder but update message
+                        const placeholder = container.querySelector('.preview-placeholder');
+                        if (placeholder) {
+                            const lastDiv = placeholder.querySelector('div:last-child');
+                            if (lastDiv) {
+                                lastDiv.innerHTML = '<i class="fas fa-sync-alt"></i> Click download to generate';
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading preview:', error);
+                    const placeholder = container.querySelector('.preview-placeholder');
+                    if (placeholder) {
+                        const lastDiv = placeholder.querySelector('div:last-child');
+                        if (lastDiv) {
+                            lastDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Preview unavailable';
+                        }
+                    }
+                });
+        }
+
+        // Also add this to handle when fullsize_b64 is not returned
+        function showPreviewModal(imageSrc, templateNum, templateName) {
+            const modal = document.getElementById('previewModal');
+            const content = document.getElementById('previewContent');
+            
+            // Create a high-quality preview
+            content.innerHTML = `
+                <div style="text-align: center; max-width: 1200px; width: 100%;">
+                    <div style="padding: 20px; background: var(--secondary); color: white; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0;">
+                        <h3 style="margin: 0; font-size: 1.5rem;">Template #${templateNum}: ${templateName}</h3>
+                        <div>
+                            <button onclick="closePreview()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; margin-left: 20px;">&times;</button>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 40px; background: #1a1a1a; min-height: 600px; display: flex; align-items: center; justify-content: center; overflow: auto;">
+                        <div id="imageContainer" style="position: relative;">
+                            <img src="${imageSrc}" 
+                                alt="Template Preview" 
+                                id="previewImage"
+                                style="max-width: 100%; max-height: 70vh; display: block; border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,0.7);">
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 20px; background: white; border-top: 1px solid var(--light-gray);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="color: var(--gray); font-size: 0.9rem;">
+                                <i class="fas fa-expand-arrows-alt" style="margin-right: 5px;"></i>
+                                Click and drag to pan • Scroll to zoom
+                            </div>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button onclick="zoomIn()" class="modal-btn">
+                                    <i class="fas fa-search-plus"></i> Zoom In
+                                </button>
+                                <button onclick="zoomOut()" class="modal-btn">
+                                    <i class="fas fa-search-minus"></i> Zoom Out
+                                </button>
+                                <button onclick="resetZoom()" class="modal-btn">
+                                    <i class="fas fa-sync-alt"></i> Reset
+                                </button>
+                                <button onclick="downloadPreview('${imageSrc}', ${templateNum})" class="modal-btn" style="background: var(--primary); color: white;">
+                                    <i class="fas fa-download"></i> Download Preview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+            
+            // Add zoom functionality after image loads
+            const img = document.getElementById('previewImage');
+            img.onload = function() {
+                console.log(`📏 Preview image loaded: ${this.naturalWidth}x${this.naturalHeight}`);
+                setupImageZoom();
+            };
+        }
+
+        // Zoom functionality
+        let currentScale = 1;
+        const minScale = 0.5;
+        const maxScale = 3;
+        const scaleStep = 0.25;
+
+        function setupImageZoom() {
+            const img = document.getElementById('previewImage');
+            if (!img) return;
+            
+            // Reset scale
+            currentScale = 1;
+            img.style.transform = `scale(${currentScale})`;
+            img.style.transformOrigin = 'center center';
+            img.style.transition = 'transform 0.3s ease';
+            
+            // Enable drag to pan
+            let isDragging = false;
+            let startX, startY, translateX = 0, translateY = 0;
+            
+            img.addEventListener('mousedown', function(e) {
+                if (currentScale > 1) {
+                    isDragging = true;
+                    startX = e.clientX - translateX;
+                    startY = e.clientY - translateY;
+                    img.style.cursor = 'grabbing';
+                }
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                
+                img.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+            });
+            
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+                img.style.cursor = currentScale > 1 ? 'grab' : 'default';
+            });
+            
+            // Enable mouse wheel zoom
+            img.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                
+                if (e.deltaY < 0) {
+                    // Zoom in
+                    if (currentScale < maxScale) {
+                        currentScale += scaleStep;
+                    }
+                } else {
+                    // Zoom out
+                    if (currentScale > minScale) {
+                        currentScale -= scaleStep;
+                    }
+                }
+                
+                img.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+                img.style.cursor = currentScale > 1 ? 'grab' : 'default';
+            });
+            
+            // Touch support for mobile
+            let initialDistance = null;
+            
+            img.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) {
+                    initialDistance = getDistance(e.touches[0], e.touches[1]);
+                }
+            });
+            
+            img.addEventListener('touchmove', function(e) {
+                if (e.touches.length === 2 && initialDistance !== null) {
+                    e.preventDefault();
+                    const currentDistance = getDistance(e.touches[0], e.touches[1]);
+                    const scaleChange = currentDistance / initialDistance;
+                    
+                    currentScale = Math.max(minScale, Math.min(maxScale, currentScale * scaleChange));
+                    img.style.transform = `scale(${currentScale})`;
+                    initialDistance = currentDistance;
+                }
+            });
+            
+            img.addEventListener('touchend', function() {
+                initialDistance = null;
+            });
+        }
+
+        function getDistance(touch1, touch2) {
+            const dx = touch1.clientX - touch2.clientX;
+            const dy = touch1.clientY - touch2.clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function zoomIn() {
+            if (currentScale < maxScale) {
+                currentScale += scaleStep;
+                updateImageTransform();
+            }
+        }
+
+        function zoomOut() {
+            if (currentScale > minScale) {
+                currentScale -= scaleStep;
+                updateImageTransform();
+            }
+        }
+
+        function resetZoom() {
+            currentScale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateImageTransform();
+        }
+
+        function updateImageTransform() {
+            const img = document.getElementById('previewImage');
+            if (img) {
+                img.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+                img.style.cursor = currentScale > 1 ? 'grab' : 'default';
+            }
+        }
+
+        function downloadPreview(imageSrc, templateNum) {
+            // Create a temporary link to download the image
+            const link = document.createElement('a');
+            link.href = imageSrc;
+            link.download = `template_${templateNum}_preview.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Close preview modal
+        function closePreview() {
+            document.getElementById('previewModal').style.display = 'none';
+            // Reset any zoom/pan state
+            currentScale = 1;
+            translateX = 0;
+            translateY = 0;
+        }
+
+        // Also update the CSS for modal buttons
+        const modalButtonCSS = `
+            .modal-btn {
+                padding: 8px 16px;
+                background: white;
+                border: 1px solid var(--light-gray);
+                border-radius: 6px;
+                color: var(--secondary);
+                font-size: 0.9rem;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                transition: all 0.2s ease;
+            }
+            
+            .modal-btn:hover {
+                background: var(--light);
+                transform: translateY(-2px);
+            }
+            
+            .modal-btn i {
+                font-size: 0.9rem;
+            }
+            
+            #previewModal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.95);
+                z-index: 2000;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                overflow: auto;
+            }
+            
+            #previewModal > div {
+                background: white;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                max-width: 95vw;
+                max-height: 95vh;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            #previewContent {
+                flex: 1;
+                overflow: auto;
+            }
+            
+            #previewImage {
+                cursor: default;
+                transition: transform 0.3s ease;
+            }
+            
+            #previewImage.zoomable {
+                cursor: zoom-in;
+            }
+            
+            #previewImage.zoomable:hover {
+                opacity: 0.95;
+            }
+        `;
+
+        // Add the CSS to the document
+        const style = document.createElement('style');
+        style.textContent = modalButtonCSS;
+        document.head.appendChild(style);
+        
+        // Close preview modal
+        function closePreview() {
+            document.getElementById('previewModal').style.display = 'none';
+        }
+        
+        // Close modal on ESC or outside click
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePreview();
+                document.getElementById('downloadAnimation').classList.remove('show');
+            }
+            
+            // Number keys 1-4 to download templates
+            if (e.key >= '1' && e.key <= '4') {
+                const templateIndex = parseInt(e.key) - 1;
+                const templateCards = document.querySelectorAll('.template-card');
+                if (templateCards[templateIndex]) {
+                    const downloadBtn = templateCards[templateIndex].querySelector('.download-btn');
+                    if (downloadBtn) {
+                        downloadBtn.click();
+                    }
+                }
+            }
+        });
+        
+        document.getElementById('previewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePreview();
+            }
+        });
+        
+        // Auto-hide download animation if user cancels
+        window.addEventListener('blur', function() {
+            setTimeout(() => {
+                document.getElementById('downloadAnimation').classList.remove('show');
+            }, 1000);
+        });
+        
+        // Add hover effects to cards
+        document.querySelectorAll('.template-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Add loading state to buttons
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (this.classList.contains('btn') || this.classList.contains('action-btn')) {
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                    this.style.pointerEvents = 'none';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.style.pointerEvents = 'auto';
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

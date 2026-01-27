@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template {{ template_num }}</title>
+    <style>
+        :root {
+            --primary: #4CB6A7;
+            --secondary: #1A2B3C;
+            --light: #f8fafc;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--secondary) 0%, #0f172a 100%);
+            color: white;
+            padding: 30px 40px;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-5px);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .header-text h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+        }
+        
+        .template-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .template-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 300px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .info-value {
+            font-weight: 600;
+        }
+        
+        /* Template Preview */
+        .preview-section {
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .template-frame {
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid var(--light);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: white;
+        }
+        
+        .template-placeholder {
+            height: 500px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 40px;
+        }
+        
+        .template-placeholder i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .template-placeholder h2 {
+            margin: 0 0 10px 0;
+            font-size: 2rem;
+        }
+        
+        .template-placeholder p {
+            margin: 0;
+            opacity: 0.8;
+            max-width: 400px;
+        }
+        
+        /* Actions */
+        .actions-section {
+            padding: 0 40px 40px;
+            text-align: center;
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .action-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .action-card i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .action-card h3 {
+            margin: 0 0 15px 0;
+            color: var(--secondary);
+        }
+        
+        .action-card p {
+            margin: 0 0 20px 0;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: #3a8c7f;
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.secondary {
+            background: var(--secondary);
+        }
+        
+        .action-btn.secondary:hover {
+            background: #0f172a;
+        }
+        
+        .action-btn.edit {
+            background: #8b5cf6;
+        }
+        
+        .action-btn.edit:hover {
+            background: #7c3aed;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid var(--light);
+        }
+        
+        .template-tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: var(--light);
+            color: var(--secondary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .tag.primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .template-info {
+                max-width: 100%;
+            }
+            
+            .template-placeholder {
+                height: 400px;
+                padding: 20px;
+            }
+            
+            .template-placeholder h2 {
+                font-size: 1.5rem;
+            }
+            
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .loading.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <a href="{{ url_for('generate_templates', session_id=session_id) }}" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Templates
+            </a>
+            
+            <div class="header-content">
+                <div class="header-text">
+                    <h1>Template {{ template_num }}</h1>
+                    <div class="template-badge">
+                        <i class="fas fa-star"></i>
+                        {{ template_info.name }}
+                    </div>
+                </div>
+                
+                <div class="template-info">
+                    <div class="info-item">
+                        <span class="info-label">Style:</span>
+                        <span class="info-value">{{ template_info.style|title }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Mood:</span>
+                        <span class="info-value">{{ template_info.mood|title }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Orientation:</span>
+                        <span class="info-value">{{ template_info.orientation|title }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Best For:</span>
+                        <span class="info-value">{{ template_info.best_for|join(', ') }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Template Preview -->
+        <div class="preview-section">
+            <div class="template-frame">
+                <div class="template-placeholder">
+                    <i class="fas fa-image"></i>
+                    <h2>Template #{{ template_num }}</h2>
+                    <p>{{ template_info.name }} - {{ template_info.style|title }} Design</p>
+                    <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.6;">Click download to generate this template with your content</p>
+                </div>
+            </div>
+            
+            <div class="template-tags">
+                <span class="tag primary">{{ template_info.style|title }}</span>
+                <span class="tag">{{ template_info.mood|title }} Mood</span>
+                <span class="tag">{{ template_info.orientation|title }} Layout</span>
+                <span class="tag">Professional Design</span>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="actions-section">
+            <div class="actions-grid">
+                <div class="action-card">
+                    <i class="fas fa-edit"></i>
+                    <h3>Edit Content</h3>
+                    <p>Customize text, hashtags, and call-to-action for this specific template</p>
+                    <a href="{{ url_for('edit_template_text', session_id=session_id, template_num=template_num) }}" class="action-btn edit">
+                        <i class="fas fa-edit"></i>
+                        Edit Template
+                    </a>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-download"></i>
+                    <h3>Download Now</h3>
+                    <p>Get this template as a high-quality JPEG image with your content applied</p>
+                    <a href="{{ url_for('download_template', session_id=session_id, template_num=template_num) }}" class="action-btn download-btn">
+                        <i class="fas fa-download"></i>
+                        Download JPEG
+                    </a>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-palette"></i>
+                    <h3>View All</h3>
+                    <p>Return to see all 4 selected templates and choose another one to work with</p>
+                    <a href="{{ url_for('generate_templates', session_id=session_id) }}" class="action-btn secondary">
+                        <i class="fas fa-th-large"></i>
+                        View All Templates
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>Smart Template Generator • Template #{{ template_num }} • {{ template_info.name }}</p>
+            <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">This template was selected by AI based on your image and content</p>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading" id="loadingOverlay">
+        <div class="spinner"></div>
+        <h2>Generating Template...</h2>
+        <p>Please wait while we create your template with your content</p>
+    </div>
+    
+    <script>
+        // Handle download click
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Show loading
+                document.getElementById('loadingOverlay').classList.add('show');
+                
+                const downloadUrl = this.href;
+                
+                // Start download after short delay
+                setTimeout(() => {
+                    window.location.href = downloadUrl;
+                }, 1000);
+                
+                // Hide loading after 5 seconds (in case download takes time)
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay').classList.remove('show');
+                }, 5000);
+            });
+        });
+        
+        // Add animation to page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate elements
+            const elements = document.querySelectorAll('.header, .template-frame, .action-card');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+            
+            // Add hover effects to action cards
+            document.querySelectorAll('.action-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // D to download
+            if (e.key === 'd' || e.key === 'D') {
+                e.preventDefault();
+                document.querySelector('.download-btn').click();
+            }
+            
+            // E to edit
+            if (e.key === 'e' || e.key === 'E') {
+                e.preventDefault();
+                document.querySelector('.edit').click();
+            }
+            
+            // B to go back
+            if (e.key === 'b' || e.key === 'B') {
+                e.preventDefault();
+                document.querySelector('.back-btn').click();
+            }
+            
+            // Escape to hide loading
+            if (e.key === 'Escape') {
+                document.getElementById('loadingOverlay').classList.remove('show');
+            }
+        });
+        
+        // Show template info on page load
+        setTimeout(() => {
+            console.log('Template Information:', {
+                number: '{{ template_num }}',
+                name: '{{ template_info.name|safe }}',
+                style: '{{ template_info.style|safe }}',
+                mood: '{{ template_info.mood|safe }}',
+                orientation: '{{ template_info.orientation|safe }}',
+                bestFor: '{{ template_info.best_for|join(", ")|safe }}'
+            });
+        }, 1000);
+        
+        // Auto-redirect to download if there's a download parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('download') === 'true') {
+            document.querySelector('.download-btn').click();
+        }
+    </script>
+</body>
+</html>

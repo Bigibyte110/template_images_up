@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Template Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CB6A7;
+            --secondary: #1A2B3C;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--secondary);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--secondary) 0%, #0f172a 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+        
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin: 0 0 15px 0;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .form-section {
+            padding: 40px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .upload-area {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--light-gray);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 182, 167, 0.2);
+        }
+        
+        .file-upload {
+            position: relative;
+            border: 3px dashed var(--light-gray);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: rgba(76, 182, 167, 0.05);
+        }
+        
+        .file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .file-upload p {
+            margin: 0;
+            color: var(--gray);
+        }
+        
+        .file-upload strong {
+            color: var(--secondary);
+        }
+        
+        .preview-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .preview-box {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .preview-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            overflow: hidden;
+            border: 2px solid var(--light-gray);
+        }
+        
+        .preview-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            background: #3a8c7f;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(76, 182, 167, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature i {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .feature h3 {
+            margin: 0 0 10px 0;
+            color: var(--secondary);
+        }
+        
+        .feature p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #c00;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .loading.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .file-info {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="ai-badge">
+                <i class="fas fa-robot"></i>
+                AI-Powered Template Generator
+            </div>
+            <h1>Create Amazing Social Media Posts</h1>
+            <p>Upload your image, add details, and get 4 professionally designed templates selected by AI. No signup required!</p>
+        </div>
+        
+        <div class="form-section">
+            {% if error %}
+            <div class="error-message show">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </div>
+            {% endif %}
+            
+            <form method="POST" enctype="multipart/form-data" id="uploadForm" onsubmit="showLoading()">
+                <!-- Image Upload -->
+                <div class="upload-area">
+                    <div class="form-group">
+                        <label for="image">
+                            <i class="fas fa-image"></i>
+                            Main Image *
+                        </label>
+                        <div class="file-upload">
+                            <input type="file" id="image" name="image" accept="image/*" required onchange="previewImage(this)">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <p><strong>Click to upload</strong> or drag and drop</p>
+                            <p class="file-info">PNG, JPG, GIF up to 10MB</p>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-container">
+                        <div class="preview-box">
+                            <div class="preview-image" id="imagePreview">
+                                <i class="fas fa-image" style="font-size: 40px; color: #999;"></i>
+                            </div>
+                            <p>Main Image</p>
+                        </div>
+                        
+                        <div class="preview-box">
+                            <div class="form-group">
+                                <label for="logo">
+                                    <i class="fas fa-crown"></i>
+                                    Logo (Optional)
+                                </label>
+                                <div class="file-upload" style="padding: 20px;">
+                                    <input type="file" id="logo" name="logo" accept="image/*" onchange="previewLogo(this)">
+                                    <div style="font-size: 24px; color: var(--primary); margin-bottom: 10px;">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </div>
+                                    <p><strong>Add Logo</strong></p>
+                                </div>
+                            </div>
+                            <div class="preview-image" id="logoPreview">
+                                <i class="fas fa-crown" style="font-size: 40px; color: #999;"></i>
+                            </div>
+                            <p>Logo</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Text Inputs -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="title">
+                            <i class="fas fa-heading"></i>
+                            Event/Post Title
+                        </label>
+                        <input type="text" id="title" name="title" placeholder="e.g., Team Night Out" value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">
+                            <i class="fas fa-building"></i>
+                            Company/Organization
+                        </label>
+                        <input type="text" id="company" name="company" placeholder="e.g., NUB Corporation" value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date
+                        </label>
+                        <input type="text" id="date" name="date" placeholder="e.g., 2024-01-15 or Q1 2024" value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">
+                            <i class="fas fa-user"></i>
+                            Author/Organizer
+                        </label>
+                        <input type="text" id="name" name="name" placeholder="e.g., John Doe or Marketing Team" value="">
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-magic"></i>
+                    Generate 4 Smart Templates
+                </button>
+            </form>
+            
+            <!-- Features -->
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-brain"></i>
+                    <h3>AI-Powered Selection</h3>
+                    <p>Our AI analyzes your image and selects the 4 best matching templates from 20+ designs.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-edit"></i>
+                    <h3>Smart Editing</h3>
+                    <p>Edit text with AI suggestions. Customize each template individually.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Instant Results</h3>
+                    <p>No waiting. Templates are generated on-demand in high quality.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure & Private</h3>
+                    <p>Your images are processed in memory and never stored on our servers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading" id="loadingOverlay">
+        <div class="spinner"></div>
+        <h2 style="margin: 20px 0 10px 0;">Generating Your Templates</h2>
+        <p>AI is analyzing your image and selecting the best designs...</p>
+    </div>
+    
+    <script>
+        // Preview images
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Image Preview">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function previewLogo(input) {
+            const preview = document.getElementById('logoPreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Logo Preview">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        // Show loading
+        function showLoading() {
+            // Basic validation
+            const imageInput = document.getElementById('image');
+            if (!imageInput.files || !imageInput.files[0]) {
+                alert('Please upload a main image.');
+                return false;
+            }
+            
+            document.getElementById('loadingOverlay').classList.add('show');
+            return true;
+        }
+        
+        // Set default date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            document.getElementById('date').value = `${year}-${month}-${day}`;
+            
+            // Auto-populate name from browser if available
+            if (localStorage.getItem('user_name')) {
+                document.getElementById('name').value = localStorage.getItem('user_name');
+            }
+            
+            // Save name on input
+            document.getElementById('name').addEventListener('input', function() {
+                if (this.value.length > 2) {
+                    localStorage.setItem('user_name', this.value);
+                }
+            });
+        });
+        
+        // Drag and drop functionality
+        document.querySelectorAll('.file-upload').forEach(uploadArea => {
+            const input = uploadArea.querySelector('input[type="file"]');
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary)';
+                uploadArea.style.background = 'rgba(76, 182, 167, 0.1)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = '';
+                uploadArea.style.background = '';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '';
+                uploadArea.style.background = '';
+                
+                if (e.dataTransfer.files.length) {
+                    input.files = e.dataTransfer.files;
+                    
+                    // Trigger change event
+                    const event = new Event('change', { bubbles: true });
+                    input.dispatchEvent(event);
+                }
+            });
+        });
+        
+        // Form validation
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const imageInput = document.getElementById('image');
+            if (!imageInput.files || !imageInput.files[0]) {
+                e.preventDefault();
+                alert('Please upload a main image.');
+                return false;
+            }
+            
+            // Check file size (10MB)
+            if (imageInput.files[0].size > 10 * 1024 * 1024) {
+                e.preventDefault();
+                alert('Image size should be less than 10MB.');
+                return false;
+            }
+            
+            return true;
+        });
+    </script>
+</body>
+</html>

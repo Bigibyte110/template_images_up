@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Content - AI Assisted</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CB6A7;
+            --primary-dark: #3a8c7f;
+            --secondary: #1A2B3C;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--secondary);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .editor-section, .ai-suggestions {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--light-gray);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 182, 167, 0.2);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .ai-suggestion-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .suggestion-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .suggestion-item:hover {
+            background: var(--light);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 182, 167, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--light);
+            color: var(--secondary);
+            border: 2px solid var(--light-gray);
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+        
+        .preview-box {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 2px dashed #cbd5e1;
+            min-height: 150px;
+        }
+        
+        .preview-box h4 {
+            margin-top: 0;
+            color: var(--secondary);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .char-count {
+            font-size: 0.85rem;
+            color: var(--gray);
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        .image-analysis {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid var(--light-gray);
+        }
+        
+        .analysis-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .analysis-item i {
+            color: var(--primary);
+            width: 20px;
+        }
+        
+        .template-count {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="ai-badge">
+                <i class="fas fa-robot"></i> AI Assisted Editing
+            </div>
+            <h1>Customize Your Content</h1>
+            <p>Edit your text before generating templates. Click any AI suggestion to apply it instantly.</p>
+            <div style="margin-top: 15px;">
+                <span class="template-count">{{ template_count }} Templates Selected</span>
+            </div>
+        </div>
+        
+        <div class="content-grid">
+            <!-- Editor Section -->
+            <div class="editor-section">
+                <h2><i class="fas fa-edit"></i> Content Editor</h2>
+                
+                <form id="contentForm">
+                    <div class="form-group">
+                        <label for="title">
+                            <i class="fas fa-heading"></i>
+                            Title *
+                        </label>
+                        <input type="text" id="title" name="title" 
+                               value="{{ form_data.title if form_data else '' }}" 
+                               placeholder="Enter your main title" required>
+                        <div class="char-count" id="titleCount">0/100</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">
+                            <i class="fas fa-building"></i>
+                            Company/Organization
+                        </label>
+                        <input type="text" id="company" name="company" 
+                               value="{{ form_data.company if form_data else '' }}" 
+                               placeholder="Your company name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date
+                        </label>
+                        <input type="text" id="date" name="date" 
+                               value="{{ form_data.date if form_data else '' }}" 
+                               placeholder="Event date or year">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">
+                            <i class="fas fa-user"></i>
+                            Author/Organizer
+                        </label>
+                        <input type="text" id="name" name="name" 
+                               value="{{ form_data.name if form_data else '' }}" 
+                               placeholder="Your name or team name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="custom_text1">
+                            <i class="fas fa-paragraph"></i>
+                            Description (Custom Text 1)
+                        </label>
+                        <textarea id="custom_text1" name="custom_text1" 
+                                  placeholder="Write a compelling description...">{{ ai_content.descriptions[0] if ai_content and ai_content.descriptions else '' }}</textarea>
+                        <div class="char-count" id="desc1Count">0/300</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="custom_text2">
+                            <i class="fas fa-comment-alt"></i>
+                            Additional Text (Custom Text 2)
+                        </label>
+                        <textarea id="custom_text2" name="custom_text2" 
+                                  placeholder="Additional details or quotes..."></textarea>
+                        <div class="char-count" id="desc2Count">0/200</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hashtags">
+                            <i class="fas fa-hashtag"></i>
+                            Hashtags
+                        </label>
+                        <input type="text" id="hashtags" name="hashtags" 
+                               value="{{ ai_content.hashtags|join(' ') if ai_content and ai_content.hashtags else '' }}" 
+                               placeholder="#team #event #success">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cta">
+                            <i class="fas fa-bullhorn"></i>
+                            Call to Action
+                        </label>
+                        <input type="text" id="cta" name="cta" 
+                               value="{{ ai_content.ctas[0] if ai_content and ai_content.ctas else '' }}" 
+                               placeholder="Like, share, or comment...">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-magic"></i>
+                            Generate {{ template_count }} Templates
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="getMoreSuggestions()">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh AI Suggestions
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- AI Suggestions Section -->
+            <div class="ai-suggestions">
+                <h2><i class="fas fa-lightbulb"></i> AI Suggestions</h2>
+                
+                {% if ai_analysis %}
+                <div class="image-analysis">
+                    <h3><i class="fas fa-image"></i> Image Analysis</h3>
+                    <div class="analysis-item">
+                        <i class="fas fa-palette"></i>
+                        <span><strong>Theme:</strong> {{ ai_analysis.theme }}</span>
+                    </div>
+                    <div class="analysis-item">
+                        <i class="fas fa-smile"></i>
+                        <span><strong>Mood:</strong> {{ ai_analysis.mood }}</span>
+                    </div>
+                    <div class="analysis-item">
+                        <i class="fas fa-paint-brush"></i>
+                        <span><strong>Colors:</strong> {{ ai_analysis.colors|join(', ') }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if ai_content %}
+                <div class="ai-suggestion-box">
+                    <h3><i class="fas fa-heading"></i> Title Ideas</h3>
+                    {% for title in ai_content.titles %}
+                    <div class="suggestion-item" onclick="useSuggestion('title', '{{ title }}')">
+                        <i class="fas fa-magic"></i> {{ title }}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="ai-suggestion-box">
+                    <h3><i class="fas fa-comment"></i> Description Ideas</h3>
+                    {% for desc in ai_content.descriptions %}
+                    <div class="suggestion-item" onclick="useSuggestion('custom_text1', '{{ desc }}')">
+                        <i class="fas fa-magic"></i> {{ desc[:80] }}{% if desc|length > 80 %}...{% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="ai-suggestion-box">
+                    <h3><i class="fas fa-hashtag"></i> Hashtags</h3>
+                    <div class="suggestion-item" onclick="useSuggestion('hashtags', '{{ ai_content.hashtags|join()}}')">
+                        <i class="fas fa-magic"></i> {{ ai_content.hashtags|join(' ') if ai_content.hashtags else 'No hashtags' }}
+                    </div>
+                </div>
+                
+                <div class="ai-suggestion-box">
+                    <h3><i class="fas fa-bullhorn"></i> Call to Actions</h3>
+                    {% for cta in ai_content.ctas %}
+                    <div class="suggestion-item" onclick="useSuggestion('cta', '{{ cta }}')">
+                        <i class="fas fa-magic"></i> {{ cta }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <!-- Live Preview -->
+                <div class="preview-box">
+                    <h3><i class="fas fa-eye"></i> Live Preview</h3>
+                    <div id="livePreview">
+                        <p style="color: #999; font-style: italic;">Your content will appear here as you type...</p>
+                    </div>
+                </div>
+                
+                <!-- Tips -->
+                <div style="margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #4CB6A7;">
+                    <h4><i class="fas fa-tips"></i> Tips</h4>
+                    <ul style="margin: 10px 0 0 0; padding-left: 20px; font-size: 0.9rem; color: #555;">
+                        <li>Click any AI suggestion to apply it</li>
+                        <li>Keep titles under 100 characters</li>
+                        <li>Use relevant hashtags for visibility</li>
+                        <li>Add a clear call-to-action</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div>Saving your content and generating templates...</div>
+    </div>
+
+    <script>
+        // Character counters
+        function updateCharCount(inputId, counterId, maxLength) {
+            const input = document.getElementById(inputId);
+            const counter = document.getElementById(counterId);
+            if (input && counter) {
+                const length = input.value.length;
+                counter.textContent = `${length}/${maxLength}`;
+                
+                // Update color based on percentage
+                const percentage = (length / maxLength) * 100;
+                if (percentage > 90) {
+                    counter.style.color = 'var(--warning)';
+                } else if (percentage > 100) {
+                    counter.style.color = 'var(--danger)';
+                } else {
+                    counter.style.color = 'var(--gray)';
+                }
+            }
+        }
+        
+        // Initialize character counters
+        document.getElementById('title').addEventListener('input', () => updateCharCount('title', 'titleCount', 100));
+        document.getElementById('custom_text1').addEventListener('input', () => updateCharCount('custom_text1', 'desc1Count', 300));
+        document.getElementById('custom_text2').addEventListener('input', () => updateCharCount('custom_text2', 'desc2Count', 200));
+        
+        // Initial update
+        updateCharCount('title', 'titleCount', 100);
+        updateCharCount('custom_text1', 'desc1Count', 300);
+        updateCharCount('custom_text2', 'desc2Count', 200);
+        
+        // Use AI suggestion
+        function useSuggestion(fieldId, value) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.value = value;
+                field.dispatchEvent(new Event('input')); // Trigger input event for counters
+                updatePreview();
+                
+                // Show feedback
+                showToast(`✓ Applied suggestion to ${fieldId.replace('_', ' ')}`);
+            }
+        }
+        
+        // Show toast message
+        function showToast(message) {
+            // Remove existing toast
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) existingToast.remove();
+            
+            // Create new toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i>${message}`;
+            
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // Update live preview
+        function updatePreview() {
+            const title = document.getElementById('title').value;
+            const company = document.getElementById('company').value;
+            const date = document.getElementById('date').value;
+            const name = document.getElementById('name').value;
+            const desc = document.getElementById('custom_text1').value;
+            const hashtags = document.getElementById('hashtags').value;
+            const cta = document.getElementById('cta').value;
+            
+            let previewHTML = '';
+            
+            if (title) {
+                previewHTML += `<h4 style="margin: 0 0 10px 0; color: var(--secondary);">${title}</h4>`;
+            }
+            
+            const meta = [company, date, name].filter(Boolean).join(' • ');
+            if (meta) {
+                previewHTML += `<p style="margin: 0 0 15px 0; color: var(--primary); font-weight: 600;">${meta}</p>`;
+            }
+            
+            if (desc) {
+                previewHTML += `<p style="margin: 0 0 15px 0; color: #555; line-height: 1.5;">${desc}</p>`;
+            }
+            
+            if (hashtags) {
+                previewHTML += `<p style="margin: 0 0 15px 0; color: #8b5cf6; font-weight: 500;">${hashtags}</p>`;
+            }
+            
+            if (cta) {
+                previewHTML += `<div style="background: var(--primary); color: white; padding: 10px 15px; border-radius: 6px; display: inline-block; font-weight: 600;">${cta}</div>`;
+            }
+            
+            if (!previewHTML) {
+                previewHTML = '<p style="color: #999; font-style: italic;">Your content will appear here as you type...</p>';
+            }
+            
+            document.getElementById('livePreview').innerHTML = previewHTML;
+        }
+        
+        // Initialize preview
+        updatePreview();
+        
+        // Add input listeners for preview
+        ['title', 'company', 'date', 'name', 'custom_text1', 'hashtags', 'cta'].forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.addEventListener('input', updatePreview);
+            }
+        });
+        
+        // Get more AI suggestions
+        function getMoreSuggestions() {
+            const currentText = document.getElementById('title').value + ' ' + 
+                              document.getElementById('custom_text1').value;
+            
+            showToast('Generating more AI suggestions...');
+            
+            // Simulate API call
+            setTimeout(() => {
+                showToast('✓ AI suggestions refreshed!');
+            }, 1000);
+        }
+        
+        // Form submission
+        document.getElementById('contentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            const formData = new FormData(this);
+            
+            // Submit form
+            fetch("{{ url_for('save_content', session_id=session_id) }}", {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                if (data.success) {
+                    showToast('✓ Content saved successfully!');
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1000);
+                } else {
+                    showToast('✗ Error: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                console.error('Error:', error);
+                showToast('✗ Failed to save content. Please try again.');
+            });
+        });
+        
+        // Auto-save draft
+        let saveDraftTimeout;
+        function saveDraft() {
+            clearTimeout(saveDraftTimeout);
+            saveDraftTimeout = setTimeout(() => {
+                const formData = {
+                    title: document.getElementById('title').value,
+                    company: document.getElementById('company').value,
+                    date: document.getElementById('date').value,
+                    name: document.getElementById('name').value,
+                    custom_text1: document.getElementById('custom_text1').value,
+                    custom_text2: document.getElementById('custom_text2').value,
+                    hashtags: document.getElementById('hashtags').value,
+                    cta: document.getElementById('cta').value
+                };
+                
+                localStorage.setItem('content_draft', JSON.stringify(formData));
+            }, 2000);
+        }
+        
+        // Load draft if exists
+        const savedDraft = localStorage.getItem('content_draft');
+        if (savedDraft) {
+            try {
+                const draft = JSON.parse(savedDraft);
+                Object.keys(draft).forEach(key => {
+                    const field = document.getElementById(key);
+                    if (field && draft[key]) {
+                        field.value = draft[key];
+                    }
+                });
+                updatePreview();
+                showToast('✓ Draft loaded from previous session');
+            } catch (e) {
+                console.error('Error loading draft:', e);
+            }
+        }
+        
+        // Save draft on input
+        document.querySelectorAll('input, textarea').forEach(field => {
+            field.addEventListener('input', () => {
+                saveDraft();
+                updatePreview();
+            });
+        });
+        
+        // Clear draft on successful submit
+        document.getElementById('contentForm').addEventListener('submit', () => {
+            localStorage.removeItem('content_draft');
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+S to save draft
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveDraft();
+                showToast('✓ Draft saved locally');
+            }
+        });
+    </script>
+</body>
+</html>
