@@ -3,7 +3,7 @@
     "api/index.py": {
       "runtime": "python3.9",
       "maxDuration": 60,
-      "memory": 3008
+      "memory": 2048
     }
   },
   "rewrites": [
@@ -11,9 +11,5 @@
       "source": "/(.*)",
       "destination": "/api/index.py"
     }
-  ],
-  "env": {
-    "PYTHONPATH": "/var/task",
-    "PLAYWRIGHT_BROWSERS_PATH": "0"
-  }
-} 
+  ]
+}
