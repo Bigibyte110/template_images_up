@@ -1,14 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
-    }
-  ],
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/index.py": {
       "maxDuration": 60,
@@ -20,8 +11,5 @@
       "source": "/(.*)",
       "destination": "/api/index"
     }
-  ],
-  "env": {
-    "PLAYWRIGHT_BROWSERS_PATH": "/tmp/.playwright"
-  }
+  ]
 }
