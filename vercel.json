@@ -1,11 +1,4 @@
 {
-  "functions": {
-    "api/index.py": {
-      "runtime": "python@3.12",
-      "maxDuration": 60,
-      "memory": 2048
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
