@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 import base64
 import hashlib
 from struct import unpack
-import imgkit
 
 # Load environment variables 
 load_dotenv()
