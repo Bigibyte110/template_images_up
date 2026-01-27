@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Smart Template Generator with AI Suggestions",
   "engines": {
-    "node": "18.x",  // Changed from >=14.0.0 to pinned version
+    "node": "18.x",
     "npm": ">=9.0.0"
   },
   "scripts": {
