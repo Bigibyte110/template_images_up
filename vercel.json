@@ -1,5 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm install && npx playwright install chromium --with-deps",
+  "installCommand": "npm install",
+  "env": {
+    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "0"
+  },
   "rewrites": [
     {
       "source": "/(.*)",
