@@ -1,15 +1,13 @@
 {
   "name": "smart-template-generator",
   "version": "1.0.0",
-  "description": "Smart Template Generator with AI Suggestions",
   "engines": {
-    "node": "24.x",
-    "npm": ">=9.0.0"
+    "node": "24.x"
   },
   "scripts": {
-    "vercel-build": "echo 'Installing Playwright...' && npx playwright install chromium"
+    "install": "npm install playwright && playwright install chromium"
   },
   "dependencies": {
-    "@playwright/browser-chromium": "^1.40.0"
+    "playwright": "^1.40.0"
   }
 }
