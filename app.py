@@ -4088,8 +4088,51 @@ body {{ margin: 0; min-height: 100vh; background-color: #0b1219; display: flex; 
 # GENERATION FUNCTIONS
 # =============================================
 
+# async def generate_jpg_in_memory(template_num, data, edited_content, image_data, logo_data):
+#     """Generate JPG in-memory without saving to disk"""
+#     print(f"[GENERATE] Generating template {template_num} in-memory...")
+    
+#     try:
+#         # Convert image data to base64
+#         image_b64 = base64.b64encode(image_data).decode('utf-8') if image_data else None
+#         logo_b64 = base64.b64encode(logo_data).decode('utf-8') if logo_data else None
+        
+#         # Create data with base64 image URLs embedded
+#         data_with_urls = data.copy()
+#         data_with_urls['image_b64'] = image_b64
+#         data_with_urls['logo_b64'] = logo_b64
+        
+#         # Create HTML content
+#         html_content = create_html_content(template_num, data_with_urls, edited_content)
+        
+#         # Launch browser
+#         async with async_playwright() as p:
+#             browser = await p.chromium.launch(headless=True)
+#             page = await browser.new_page(viewport={"width": 1200, "height": 800})
+            
+#             # Set HTML content
+#             await page.set_content(html_content, wait_until="networkidle")
+#             await page.wait_for_timeout(500)
+            
+#             # Take screenshot
+#             screenshot_bytes = await page.screenshot(
+#                 type="jpeg",
+#                 quality=90,
+#                 full_page=True
+#             )
+            
+#             await browser.close()
+#             print(f"[SCREENSHOT] Generated {len(screenshot_bytes)} bytes for template {template_num}")
+            
+#             return screenshot_bytes
+            
+#     except Exception as e:
+#         print(f"❌ Error generating template {template_num}: {e}")
+#         import traceback
+#         traceback.print_exc()
+#         return None
 async def generate_jpg_in_memory(template_num, data, edited_content, image_data, logo_data):
-    """Generate JPG in-memory without saving to disk"""
+    """Generate JPG in-memory with Vercel-optimized settings"""
     print(f"[GENERATE] Generating template {template_num} in-memory...")
     
     try:
@@ -4105,13 +4148,31 @@ async def generate_jpg_in_memory(template_num, data, edited_content, image_data,
         # Create HTML content
         html_content = create_html_content(template_num, data_with_urls, edited_content)
         
-        # Launch browser
+        # Launch browser with Vercel serverless optimizations
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True)
+            # Critical: Use args for serverless environment
+            browser = await p.chromium.launch(
+                headless=True,
+                args=[
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-accelerated-2d-canvas',
+                    '--no-first-run',
+                    '--no-zygote',
+                    '--single-process',
+                    '--disable-gpu',
+                    '--disable-web-security',
+                    '--disable-features=IsolateOrigins,site-per-process'
+                ]
+            )
+            
             page = await browser.new_page(viewport={"width": 1200, "height": 800})
             
-            # Set HTML content
-            await page.set_content(html_content, wait_until="networkidle")
+            # Set HTML content with shorter timeout for Vercel
+            await page.set_content(html_content, wait_until="domcontentloaded", timeout=15000)
+            
+            # Shorter wait time for Vercel
             await page.wait_for_timeout(500)
             
             # Take screenshot
