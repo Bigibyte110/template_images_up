@@ -2,7 +2,7 @@
   "name": "smart-template-generator",
   "version": "1.0.0",
   "scripts": {
-    "postinstall": "npx playwright install chromium --with-deps"
+    "postinstall": "mkdir -p /tmp/playwright-browsers && PLAYWRIGHT_BROWSERS_PATH=/tmp/playwright-browsers npx playwright install chromium"
   },
   "dependencies": {
     "playwright": "^1.40.0"
