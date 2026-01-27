@@ -4677,7 +4677,6 @@ def serve_static(filename):
     root_dir = os.path.dirname(os.path.abspath(__file__))
     return send_from_directory(os.path.join(root_dir, 'static'), filename)
 
-if __name__ == "__main__":
-    print("[*] Starting Smart Template Generator...")
-    print("[*] Server running on http://localhost:5000")
-    app.run(debug=True, port=5000, use_reloader=False)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
