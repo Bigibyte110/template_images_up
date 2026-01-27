@@ -1,11 +1,8 @@
 {
   "name": "smart-template-generator",
   "version": "1.0.0",
-  "engines": {
-    "node": "24.x"
-  },
   "scripts": {
-    "install": "npm install playwright && playwright install chromium"
+    "postinstall": "npx playwright install --force chromium"
   },
   "dependencies": {
     "playwright": "^1.40.0"
