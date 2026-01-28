@@ -7,3 +7,7 @@ requests==2.31.0
 weasyprint==60.1
 greenlet>=3.0.0,<3.1.0
 SQLAlchemy<2.0.0
+Pillow==10.1.0
+html2image==2.0.4.3  # For best quality
+python-dotenv==1.0.0
+gunicorn==21.2.0
